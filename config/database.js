@@ -2,14 +2,15 @@ const dotenv = require("dotenv");
 const mysql = require("mysql");
 const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
+const { Client } = require("pg");
 
 dotenv.config();
 
 let db;
 
-const client = process.env.DATABASE_CLIENT || "sqlite3";
+const dbClient = process.env.DATABASE_CLIENT || "sqlite3";
 
-if (client === "mysql") {
+if (dbClient === "mysql") {
   db = mysql.createConnection({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -38,6 +39,42 @@ if (client === "mysql") {
       (e, result) => {
         if (e) throw e;
         console.log("Table created or already exists");
+      }
+    );
+  });
+} else if (dbClient === "postgresql") {
+  db = new Client({
+    user: process.env.PG_USER,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DATABASE,
+    password: process.env.PG_PASSWORD,
+    port: process.env.PG_PORT,
+  });
+
+  db.connect((error) => {
+    if (error) {
+      console.error("Error connecting to PostgreSQL: ", error.stack);
+      return;
+    }
+    console.log("Connected to PostgreSQL");
+
+    // Check if table exists, if not, create it
+    db.query(
+      `CREATE TABLE IF NOT EXISTS submissions (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(255),
+                code_language VARCHAR(255),
+                stdIn TEXT,
+                stdOut TEXT,
+                code TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )`,
+      (error) => {
+        if (error) {
+          console.error("Error creating PostgreSQL table:", err);
+          return;
+        }
+        console.log("PostgreSQL table created or already exists");
       }
     );
   });

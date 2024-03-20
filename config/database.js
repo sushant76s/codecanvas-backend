@@ -61,7 +61,7 @@ if (dbClient === "mysql") {
     // Check if table exists, if not, create it
     db.query(
       `CREATE TABLE IF NOT EXISTS submissions (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 username VARCHAR(255),
                 code_language VARCHAR(255),
                 stdIn TEXT,

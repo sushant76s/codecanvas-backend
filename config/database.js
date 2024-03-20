@@ -71,7 +71,7 @@ if (dbClient === "mysql") {
             )`,
       (error) => {
         if (error) {
-          console.error("Error creating PostgreSQL table:", err);
+          console.error("Error creating PostgreSQL table:", error);
           return;
         }
         console.log("PostgreSQL table created or already exists");

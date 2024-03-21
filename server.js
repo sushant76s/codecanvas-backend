@@ -29,6 +29,17 @@ const options = {
 app.use(cors());
 app.use(bodyParser.json());
 
+
+// GET Route to ensure server is running or not from frontend
+app.get('/api/server-check', (req, res) => {
+  try{
+    res.status(200).json({status: true, message: "server is running!" });
+  } catch (error) {
+    console.error("Something went wrong!");
+    res.status(500).json({status: false, message: "oops server is not running :(" });
+  }
+})
+
 // GET Route to access all the entries
 app.get("/api/data", (req, res) => {
   if (dbClient === "mysql" || dbClient === "postgresql") {

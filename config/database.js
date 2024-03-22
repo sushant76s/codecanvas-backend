@@ -61,13 +61,13 @@ if (dbClient === "mysql") {
     // Check if table exists, if not, create it
     db.query(
       `CREATE TABLE IF NOT EXISTS submissions (
-                id SERIAL PRIMARY KEY,
-                username VARCHAR(255),
-                code_language VARCHAR(255),
-                stdIn TEXT,
-                stdOut TEXT,
-                code TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                "id" SERIAL PRIMARY KEY,
+                "username" VARCHAR(255),
+                "code_language" VARCHAR(255),
+                "stdIn" TEXT,
+                "stdOut" TEXT,
+                "code" TEXT,
+                "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`,
       (error) => {
         if (error) {

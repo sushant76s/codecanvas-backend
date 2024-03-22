@@ -18,7 +18,11 @@ router.get("/data", async (req, res) => {
                     .status(500)
                     .json({ error: "An error occurred while fetching data" });
             }
-            res.json(result);
+            if (dbClient === 'postgresql') {
+                res.json(result.rows);
+            } else {
+                res.json(result);
+            }
         });
     } else {
         db.all("SELECT * FROM submissions", (error, rows) => {
@@ -49,7 +53,7 @@ router.post("/data", async (req, res) => {
         });
     } else if (dbClient === "postgresql") {
         db.query(
-            "INSERT INTO submissions (username, code_language, stdIn, stdOut, code) VALUES ($1, $2, $3, $4, $5)",
+            'INSERT INTO submissions ("username", "code_language", "stdIn", "stdOut", "code") VALUES ($1, $2, $3, $4, $5)',
             [
                 formData.username,
                 formData.code_language,

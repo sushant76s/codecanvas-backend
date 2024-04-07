@@ -1,8 +1,22 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
+// const Redis = require('ioredis');
+// const { Queue } = require('bullmq');
+
 dotenv.config();
 
 const rapidApiKey = process.env.X_RAPID_API_KEY;
+
+// const client = new Redis({
+//     host: "localhost",
+//     port: 6379,
+//     maxRetriesPerRequest: null
+// });
+
+// const judgeQueue = new Queue("judgeQueue", {
+//     connection: client
+// });
+
 
 const options = {
     method: "GET",
